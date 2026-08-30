@@ -1,0 +1,152 @@
+.files-page > .error {
+  margin-bottom: 14px;
+}
+
+.file-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.failure-log-row > td {
+  padding: 0;
+  background: #0c0f0c;
+}
+
+.failure-log {
+  color: #bcc4bb;
+}
+
+.failure-log > header {
+  min-height: 58px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.failure-log > header > div {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.failure-log > header > div:first-child > svg {
+  color: #e08b84;
+}
+
+.failure-log > header span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.failure-log > header strong {
+  color: #edf0ec;
+  font-size: 11px;
+}
+
+.failure-log > header small {
+  max-width: min(60vw, 640px);
+  overflow: hidden;
+  color: #788177;
+  font: 9px 'DM Mono';
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.failure-log ol {
+  max-height: 360px;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  list-style: none;
+}
+
+.failure-log li {
+  display: grid;
+  grid-template-columns: 165px 58px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #202620;
+}
+
+.failure-log li:last-child {
+  border-bottom: 0;
+}
+
+.failure-log time {
+  color: #778076;
+  font: 9px 'DM Mono';
+}
+
+.log-level {
+  color: #aab2a9;
+  font: 9px 'DM Mono';
+}
+
+.log-level.error {
+  color: #ff8f87;
+}
+
+.log-level.warn,
+.log-level.warning {
+  color: #f0b36d;
+}
+
+.failure-log pre {
+  min-width: 0;
+  margin: 0;
+  color: #d2d7d1;
+  font: 10px/1.65 'DM Mono';
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.failure-log-loading,
+.failure-log-empty,
+.failure-log-error {
+  min-height: 72px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #8d968c;
+  font-size: 10px;
+}
+
+.failure-log-loading span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+  animation: log-pulse 1s ease-in-out infinite alternate;
+}
+
+.failure-log-error {
+  justify-content: space-between;
+  color: #ffaaa3;
+}
+
+@keyframes log-pulse {
+  to { opacity: .35; transform: scale(.75); }
+}
+
+@media (max-width: 760px) {
+  .failure-log li {
+    grid-template-columns: 1fr auto;
+  }
+
+  .failure-log pre {
+    grid-column: 1 / -1;
+  }
+
+  .failure-log > header {
+    align-items: flex-start;
+  }
+}

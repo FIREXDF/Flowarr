@@ -6,6 +6,7 @@ import "./auth-overrides.css";
 import "./nodes.css";
 import "./integrations.css";
 import "./libraries.css";
+import "./files.css";
 import "./flow-builder.css";
 import "./statistics.css";
 import { App } from "./App";

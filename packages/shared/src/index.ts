@@ -23,6 +23,7 @@ export interface MediaFile {
   probe: NormalizedProbe | null;
   savingsBytes: number;
   detectedAt: string;
+  failureJobId?: string | null;
 }
 
 export interface NormalizedProbe {

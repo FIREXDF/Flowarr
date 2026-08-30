@@ -36,6 +36,7 @@ export class Database {
       CREATE INDEX IF NOT EXISTS jobs_queue_idx ON jobs(status, priority DESC, created_at);
       CREATE INDEX IF NOT EXISTS jobs_created_idx ON jobs(created_at);
       CREATE INDEX IF NOT EXISTS jobs_finished_idx ON jobs(finished_at);
+      CREATE INDEX IF NOT EXISTS jobs_file_idx ON jobs(file_id, status, created_at);
       CREATE TABLE IF NOT EXISTS job_logs (id INTEGER PRIMARY KEY AUTOINCREMENT, job_id TEXT NOT NULL REFERENCES jobs(id) ON DELETE CASCADE, level TEXT NOT NULL, message TEXT NOT NULL, detail_json TEXT, created_at TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS worker_registration_tokens (id TEXT PRIMARY KEY, token_hash TEXT UNIQUE NOT NULL, created_at TEXT NOT NULL, expires_at TEXT NOT NULL, used_at TEXT);
       CREATE TABLE IF NOT EXISTS workers (id TEXT PRIMARY KEY, name TEXT UNIQUE NOT NULL, capabilities_json TEXT NOT NULL, path_mappings_json TEXT NOT NULL, last_seen_at TEXT NOT NULL, created_at TEXT NOT NULL);
@@ -66,8 +67,8 @@ export class Database {
   listLibraries(): Library[] { return (this.raw.prepare("SELECT * FROM libraries ORDER BY priority DESC, name").all() as Record<string, unknown>[]).map(mapLibrary); }
   listFiles(status?: string): MediaFile[] {
     const rows = status
-      ? this.raw.prepare("SELECT * FROM files WHERE status=? ORDER BY detected_at DESC LIMIT 500").all(status)
-      : this.raw.prepare("SELECT * FROM files ORDER BY detected_at DESC LIMIT 500").all();
+      ? this.raw.prepare("SELECT f.*,(SELECT j.id FROM jobs j WHERE j.file_id=f.id AND j.status='failed' ORDER BY j.created_at DESC LIMIT 1) AS failure_job_id FROM files f WHERE f.status=? ORDER BY f.detected_at DESC LIMIT 500").all(status)
+      : this.raw.prepare("SELECT f.*,(SELECT j.id FROM jobs j WHERE j.file_id=f.id AND j.status='failed' ORDER BY j.created_at DESC LIMIT 1) AS failure_job_id FROM files f ORDER BY f.detected_at DESC LIMIT 500").all();
     return (rows as Record<string, unknown>[]).map(mapFile);
   }
   listJobs(): Job[] { return (this.raw.prepare("SELECT * FROM jobs ORDER BY created_at DESC LIMIT 100").all() as Record<string, unknown>[]).map(mapJob); }
@@ -130,5 +131,5 @@ export class Database {
 }
 
 function mapLibrary(row: Record<string, unknown>): Library { return { id: String(row.id), name: String(row.name), path: String(row.path), flowId: row.flow_id ? String(row.flow_id) : null, enabled: Boolean(row.enabled), priority: Number(row.priority), extensions: JSON.parse(String(row.extensions_json)) as string[], stabilitySeconds: Number(row.stability_seconds), createdAt: String(row.created_at) }; }
-function mapFile(row: Record<string, unknown>): MediaFile { return { id: String(row.id), libraryId: String(row.library_id), path: String(row.path), name: String(row.name), size: Number(row.size), status: row.status as MediaFile["status"], probe: row.probe_json ? JSON.parse(String(row.probe_json)) : null, savingsBytes: Number(row.savings_bytes), detectedAt: String(row.detected_at) }; }
+function mapFile(row: Record<string, unknown>): MediaFile { return { id: String(row.id), libraryId: String(row.library_id), path: String(row.path), name: String(row.name), size: Number(row.size), status: row.status as MediaFile["status"], probe: row.probe_json ? JSON.parse(String(row.probe_json)) : null, savingsBytes: Number(row.savings_bytes), detectedAt: String(row.detected_at), failureJobId: row.failure_job_id ? String(row.failure_job_id) : null }; }
 function mapJob(row: Record<string, unknown>): Job { return { id: String(row.id), fileId: String(row.file_id), status: row.status as Job["status"], progress: Number(row.progress), speed: row.speed ? String(row.speed) : null, etaSeconds: row.eta_seconds === null ? null : Number(row.eta_seconds), error: row.error ? String(row.error) : null, createdAt: String(row.created_at), startedAt: row.started_at ? String(row.started_at) : null, finishedAt: row.finished_at ? String(row.finished_at) : null, workerId: row.assigned_worker_id ? String(row.assigned_worker_id) : null }; }
