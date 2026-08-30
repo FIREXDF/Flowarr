@@ -66,7 +66,7 @@ test("administrator signs in and reaches the dashboard", async ({ page }) => {
   await page.getByLabel("Display name").fill("Movies");
   await page.getByLabel("Server path").fill("D:\\Media");
   await page.getByRole("dialog").getByRole("button", { name: "Add library" }).click();
-  expect(createdLibrary).toEqual({ name: "Movies", path: "D:\\Media", flowId: "flow-hevc" });
+  expect(createdLibrary).toEqual({ name: "Movies", path: "D:\\Media", flowId: "flow-hevc", extensions: ["mkv", "mp4", "avi", "mov", "webm"], stabilitySeconds: 30 });
   await page.getByRole("button", { name: "Statistics" }).click();
   await expect(page.getByRole("heading", { name: "Statistics" })).toBeVisible();
   await expect(page.getByText("120 GB", { exact: true })).toBeVisible();

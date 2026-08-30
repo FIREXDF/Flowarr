@@ -1,1 +1,115 @@
-.flow-select,dialog form select{height:41px;border-radius:7px;border:1px solid #353d35;background:#0f120f;color:var(--text);padding:0 30px 0 11px;font-size:11px}.flow-select{min-width:170px;height:32px}.flow-select:focus-visible,dialog form select:focus-visible{outline:2px solid var(--lime);outline-offset:2px}.flow-select:disabled{opacity:.55}
+.flow-select,
+dialog form select {
+  height: 41px;
+  border: 1px solid #353d35;
+  border-radius: 7px;
+  background: #0f120f;
+  color: var(--text);
+  padding: 0 30px 0 11px;
+  font-size: 11px;
+}
+
+.flow-select {
+  min-width: 170px;
+  height: 32px;
+}
+
+.flow-select:focus-visible,
+dialog form select:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+}
+
+.flow-select:disabled {
+  opacity: .55;
+}
+
+.libraries-page > .error {
+  margin-bottom: 14px;
+}
+
+.library-path {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.library-extensions {
+  max-width: 180px;
+  overflow-wrap: anywhere;
+}
+
+.library-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.library-actions .icon:disabled,
+.library-actions .secondary:disabled {
+  cursor: not-allowed;
+  opacity: .4;
+}
+
+.library-actions .icon.danger {
+  color: #b67a74;
+}
+
+.library-actions .icon.danger:hover:not(:disabled) {
+  background: #301b19;
+  color: #ffaaa3;
+}
+
+.status.paused i {
+  background: #7d857c;
+  box-shadow: none;
+}
+
+.library-form-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(145px, .55fr);
+  gap: 12px;
+}
+
+.library-toggle {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #101410;
+  cursor: pointer;
+}
+
+.library-toggle input {
+  width: 15px;
+  height: 15px;
+  margin: 1px 0 0;
+  accent-color: var(--lime);
+}
+
+.library-toggle span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.library-toggle strong {
+  font-size: 10px;
+  color: #d9dfd8;
+}
+
+.library-toggle small {
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .library-form-grid {
+    grid-template-columns: 1fr;
+  }
+}

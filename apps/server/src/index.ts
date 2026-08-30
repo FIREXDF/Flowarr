@@ -14,6 +14,7 @@ import { hashPassword, verifyPassword } from "./auth.js";
 import { Database } from "./database.js";
 import { EventHub, WebhookNotifier } from "./events.js";
 import { createIntegration, deleteIntegration, listIntegrations, refreshEnabledIntegrations, refreshIntegration, testIntegration, updateIntegration } from "./integrations.js";
+import { deleteLibrary, updateLibrary } from "./libraries.js";
 import { LocalRunner } from "./runner.js";
 import { scanLibrary } from "./scanner.js";
 import { assignQueuedJobs, createRegistrationToken, ensureLocalWorker, expireWorkerLeases, listWorkers, LOCAL_WORKER_ID, mapPathForWorker, refreshLocalWorker, registerWorker, releaseStaleAssignments, releaseUnavailableAssignments, setWorkerPriority, setWorkerSchedule, validateWorkerCapabilities } from "./workers.js";
@@ -213,12 +214,17 @@ app.post<{ Body: { name?: string; path?: string; flowId?: string; extensions?: s
     return reply.code(201).send(db.listLibraries().find((item) => item.id === id));
   } catch (error) { return reply.code(400).send({ error: error instanceof Error ? error.message : String(error) }); }
 });
-app.patch<{ Params: { id: string }; Body: { flowId?: string } }>("/api/libraries/:id", async (request, reply) => {
-  const flowId = request.body.flowId?.trim();
-  if (!flowId || !db.getFlow(flowId)) return reply.code(400).send({ error: "Selected flow does not exist" });
-  const result = db.raw.prepare("UPDATE libraries SET flow_id=? WHERE id=?").run(flowId, request.params.id);
-  if (!result.changes) return reply.code(404).send({ error: "Library not found" });
-  return db.listLibraries().find((item) => item.id === request.params.id);
+app.patch<{ Params: { id: string }; Body: { name?: string; path?: string; flowId?: string; extensions?: string[]; stabilitySeconds?: number; enabled?: boolean } }>("/api/libraries/:id", async (request, reply) => {
+  try {
+    const library = updateLibrary(db, request.params.id, request.body);
+    return library ?? reply.code(404).send({ error: "Library not found" });
+  } catch (error) { return reply.code(400).send({ error: error instanceof Error ? error.message : String(error) }); }
+});
+app.delete<{ Params: { id: string } }>("/api/libraries/:id", async (request, reply) => {
+  const result = deleteLibrary(db, request.params.id);
+  if (result === "not-found") return reply.code(404).send({ error: "Library not found" });
+  if (result === "active-jobs") return reply.code(409).send({ error: "Wait for queued or running jobs from this library to finish before deleting it" });
+  return reply.code(204).send();
 });
 app.post<{ Params: { id: string } }>("/api/libraries/:id/scan", async (request, reply) => {
   try { return await scanLibrary(db, request.params.id); } catch (error) { return reply.code(400).send({ error: error instanceof Error ? error.message : String(error) }); }
