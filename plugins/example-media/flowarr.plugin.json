@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "flowarr.example-media",
+  "name": "Example media tools",
+  "version": "1.0.0",
+  "description": "Reference plugin demonstrating safe declarative media blocks.",
+  "author": "Flowarr",
+  "nodes": [
+    {
+      "id": "cinema-crop",
+      "label": "Cinema crop",
+      "description": "Crop configurable letterboxing from 1080p video.",
+      "category": "Video",
+      "expandsTo": "crop",
+      "defaults": { "width": 1920, "height": 800, "x": 0, "y": 140 },
+      "fields": [
+        { "key": "width", "label": "Width", "type": "number", "default": 1920, "min": 2, "max": 16384 },
+        { "key": "height", "label": "Plugin height", "type": "number", "default": 800, "min": 2, "max": 16384 },
+        { "key": "y", "label": "Vertical offset", "type": "number", "default": 140, "min": 0, "max": 8192 }
+      ]
+    }
+  ]
+}

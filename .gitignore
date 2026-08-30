@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.vite/
+coverage/
+*.db
+*.db-shm
+*.db-wal
+.env
+.env.local
+*.processing-*
+*.flowarr-backup-*
+test/*.mp4
+apps/worker/data/worker.json
+apps/web/test-results/
+*.tsbuildinfo

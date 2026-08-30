@@ -1,0 +1,32 @@
+.auth {
+  display: block;
+}
+
+.auth > section {
+  position: relative;
+  width: min(100%, 560px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 100px 40px 48px;
+}
+
+.auth-brand {
+  left: 40px;
+  top: 32px;
+  padding: 0;
+}
+
+.auth-brand strong {
+  font-size: 17px;
+}
+
+@media (max-width: 600px) {
+  .auth > section {
+    width: 100%;
+    padding: 100px 25px 40px;
+  }
+
+  .auth-brand {
+    left: 25px;
+  }
+}

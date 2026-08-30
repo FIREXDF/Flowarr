@@ -1,0 +1,9 @@
+{
+  "name": "@flowarr/worker",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "dependencies": { "@flowarr/ffmpeg": "workspace:*", "@flowarr/flow-engine": "workspace:*", "@flowarr/shared": "workspace:*" },
+  "devDependencies": { "@types/node": "^24.3.0", "typescript": "^5.9.2" },
+  "scripts": { "dev": "node --experimental-strip-types src/index.ts", "build": "tsc -p tsconfig.json", "typecheck": "tsc -p tsconfig.json --noEmit", "test": "node --test", "lint": "tsc -p tsconfig.json --noEmit" }
+}

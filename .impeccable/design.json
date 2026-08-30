@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-28T22:30:00+02:00",
+  "title": "Design System: Flowarr",
+  "extensions": {
+    "colorMeta": {
+      "primary-lime": {
+        "role": "primary",
+        "displayName": "Flowarr Lime",
+        "canonical": "#9bdf70",
+        "tonalRamp": ["#14220c", "#263d18", "#3d5c28", "#587d3a", "#75a34d", "#9bdf70", "#c2efaa", "#eefbe6"]
+      },
+      "flow-cyan": {
+        "role": "secondary",
+        "displayName": "Transform Cyan",
+        "canonical": "#1cc8d8",
+        "tonalRamp": ["#062327", "#0a3b42", "#0e5862", "#127985", "#179ba9", "#1cc8d8", "#7fe7ef", "#e4fbfc"]
+      },
+      "flow-orange": {
+        "role": "tertiary",
+        "displayName": "Decision Orange",
+        "canonical": "#ff9e43",
+        "tonalRamp": ["#2a1605", "#4a2608", "#713b0d", "#9b5314", "#c97021", "#ff9e43", "#ffc485", "#fff1df"]
+      }
+    },
+    "typographyMeta": {
+      "title": { "displayName": "Screen Title", "purpose": "Page and empty-state headings." },
+      "body": { "displayName": "Operator Body", "purpose": "Descriptions, help, and form guidance." },
+      "data": { "displayName": "Machine Data", "purpose": "IDs, revisions, paths, codecs, and measurements." }
+    },
+    "shadows": [
+      { "name": "node-lift", "value": "0 8px 22px #0008", "purpose": "Draggable graph nodes." },
+      { "name": "overlay-lift", "value": "0 20px 55px #000b", "purpose": "Template picker and floating settings." }
+    ],
+    "motion": [
+      { "name": "drawer-ease", "value": "transform 0.18s ease-out", "purpose": "Mobile navigation and block drawer." }
+    ],
+    "breakpoints": [
+      { "name": "compact", "value": "1050px" },
+      { "name": "mobile", "value": "760px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary save or creation action.",
+      "html": "<button class=\"ds-primary\">Save flow</button>",
+      "css": ".ds-primary{height:38px;padding:0 14px;border:0;border-radius:7px;background:#9bdf70;color:#0d100d;font:650 12px Manrope,system-ui,sans-serif;cursor:pointer}.ds-primary:hover{background:#b2ed8d}.ds-primary:focus-visible{outline:2px solid #9bdf70;outline-offset:2px}"
+    },
+    {
+      "name": "Operator Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Dark inset text field used across forms and editor controls.",
+      "html": "<input class=\"ds-input\" value=\"GPU HEVC encode\" aria-label=\"Flow name\">",
+      "css": ".ds-input{height:41px;padding:0 11px;border:1px solid #353d35;border-radius:7px;background:#0d100d;color:#e8ece7;font:400 12px Manrope,system-ui,sans-serif}.ds-input:focus-visible{outline:2px solid #9bdf70;outline-offset:2px}"
+    },
+    {
+      "name": "Flow Node",
+      "kind": "custom",
+      "refersTo": "flow-node",
+      "description": "Compact graph work unit with semantic family color.",
+      "html": "<div class=\"ds-node\"><span class=\"ds-node-icon\">▶</span><span><strong>Encode video</strong><small>video-encode</small></span></div>",
+      "css": ".ds-node{--tone:#1cc8d8;width:176px;height:58px;border:1px solid var(--tone);border-radius:8px;background:#111615;color:#e8ece7;display:flex;align-items:center;box-shadow:0 8px 22px #0008;font-family:Manrope,system-ui,sans-serif}.ds-node-icon{width:34px;height:56px;border-right:1px solid var(--tone);display:grid;place-items:center;color:var(--tone)}.ds-node>span:last-child{display:flex;flex-direction:column;padding:0 10px}.ds-node strong{font-size:11px}.ds-node small{margin-top:3px;color:#8e998d;font:9px 'DM Mono',monospace}"
+    },
+    {
+      "name": "Block Palette Row",
+      "kind": "custom",
+      "description": "Clickable and draggable tool entry keyed to node semantics.",
+      "html": "<button class=\"ds-block\"><span>▶</span><span><strong>Encode video</strong><small>video-encode</small></span></button>",
+      "css": ".ds-block{--tone:#1cc8d8;width:230px;min-height:43px;padding:6px 8px;border:1px solid var(--tone);border-radius:8px;background:#111615;color:var(--tone);display:grid;grid-template-columns:19px 1fr;gap:7px;text-align:left;cursor:pointer}.ds-block:hover{background:#122022}.ds-block:focus-visible{outline:2px solid #9bdf70;outline-offset:2px}.ds-block span:last-child{display:flex;flex-direction:column}.ds-block strong{color:#e8ece7;font:650 10px Manrope,system-ui,sans-serif}.ds-block small{color:#8e998d;font:9px 'DM Mono',monospace}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Signal Workbench",
+    "overview": "A dark operator surface for sustained work around local media automation. Information stays compact, controls remain familiar, and color communicates state or graph semantics instead of decorating empty space.",
+    "keyCharacteristics": [
+      "Dark neutral surfaces separated by tone and one-pixel dividers.",
+      "Lime reserved for primary actions and healthy system state.",
+      "Semantic flow colors used consistently by node family.",
+      "Compact operator density with plain-language labels.",
+      "Mono typography limited to IDs, revisions, measurements, and code."
+    ],
+    "rules": [
+      { "name": "Signal Color Rule", "body": "Saturated colors must encode action, state, or node family. They never fill large decorative regions.", "section": "colors" },
+      { "name": "Human Label Rule", "body": "Lead with the task name; place implementation IDs beneath as secondary data.", "section": "typography" },
+      { "name": "Structural Depth Rule", "body": "A surface receives either a quiet divider or meaningful elevation; decoration alone does not earn a shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do reserve lime for primary action, focus, active navigation, and healthy state.",
+      "Do preserve semantic node colors across palette rows, canvas nodes, and handles.",
+      "Do show dirty state and protect unsaved graph edits before navigation."
+    ],
+    "donts": [
+      "Don't use saturated color as large-area decoration.",
+      "Don't use monospace for ordinary labels or body copy.",
+      "Don't place the block rail beside a narrow mobile canvas; use the drawer.",
+      "Don't show failures with success color or iconography."
+    ]
+  }
+}

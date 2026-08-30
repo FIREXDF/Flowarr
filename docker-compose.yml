@@ -1,0 +1,39 @@
+services:
+  flowarr:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      FLOWARR_HOST: 0.0.0.0
+      FLOWARR_PORT: 3000
+      FLOWARR_DATA_DIR: /config
+      FLOWARR_WEB_DIR: /app/apps/web/dist
+      FLOWARR_PLUGIN_DIR: /plugins
+      FLOWARR_JWT_SECRET: ${FLOWARR_JWT_SECRET:-change-this-before-exposing-flowarr}
+      FLOWARR_ENCRYPTION_KEY: ${FLOWARR_ENCRYPTION_KEY:-change-this-before-exposing-flowarr}
+      FLOWARR_METRICS_TOKEN: ${FLOWARR_METRICS_TOKEN:-}
+      FLOWARR_WEBHOOK_URL: ${FLOWARR_WEBHOOK_URL:-}
+      FLOWARR_WEBHOOK_SECRET: ${FLOWARR_WEBHOOK_SECRET:-}
+    volumes:
+      - ./data:/config
+      - ./media:/media
+      - ./temp:/temp
+      - ./plugins:/plugins:ro
+    restart: unless-stopped
+  flowarr-worker:
+    profiles: [worker]
+    build: .
+    command: ["node", "apps/worker/dist/index.js"]
+    depends_on:
+      - flowarr
+    environment:
+      FLOWARR_SERVER_URL: http://flowarr:3000
+      FLOWARR_WORKER_NAME: docker-worker
+      FLOWARR_REGISTRATION_TOKEN: ${FLOWARR_WORKER_REGISTRATION_TOKEN}
+      FLOWARR_WORKER_DATA_DIR: /worker-config
+      FLOWARR_PATH_MAPPINGS: '[{"serverPath":"/media","workerPath":"/media"}]'
+    volumes:
+      - ./worker-data:/worker-config
+      - ./media:/media
+      - ./temp:/temp
+    restart: unless-stopped

@@ -1,0 +1,15 @@
+{
+  "name": "@flowarr/plugin-sdk",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "src/index.ts",
+  "dependencies": { "@flowarr/shared": "workspace:*" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test src/*.test.ts",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": { "tsx": "^4.20.5" }
+}

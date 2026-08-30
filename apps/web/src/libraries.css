@@ -1,0 +1,1 @@
+.flow-select,dialog form select{height:41px;border-radius:7px;border:1px solid #353d35;background:#0f120f;color:var(--text);padding:0 30px 0 11px;font-size:11px}.flow-select{min-width:170px;height:32px}.flow-select:focus-visible,dialog form select:focus-visible{outline:2px solid var(--lime);outline-offset:2px}.flow-select:disabled{opacity:.55}

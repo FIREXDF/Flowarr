@@ -1,0 +1,40 @@
+.sidebar .mobile-close{display:none}
+.page-actions{display:flex;gap:8px}
+.token-reveal{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px 18px;margin-bottom:18px;border:1px solid #43563a;background:#172015;border-radius:9px}
+.token-reveal>div{min-width:0;display:flex;flex-direction:column;gap:6px}
+.token-reveal strong{font-size:12px}
+.token-reveal code{font:11px 'DM Mono';color:var(--lime);overflow-wrap:anywhere}
+.token-reveal small{font-size:10px;color:var(--muted)}
+td>small{display:block;margin-top:4px;color:var(--muted)}
+.worker-cap{display:flex;align-items:center;gap:6px}
+.status.offline i{background:#697268;box-shadow:none}
+.status.offline{color:#7c857b}
+.node-kind{display:block;width:max-content;margin-top:6px;padding:2px 6px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font:9px 'DM Mono';letter-spacing:.06em;text-transform:uppercase}
+.node-kind.local{border-color:#4d643f;color:var(--lime)}
+.priority-control{display:flex;align-items:flex-start;flex-direction:column;gap:4px}
+.priority-control input{width:62px;padding:7px 8px;border:1px solid var(--line);border-radius:6px;background:#0c110d;color:var(--text);font:12px 'DM Mono'}
+.priority-control input:focus{outline:1px solid var(--lime);border-color:var(--lime)}
+.priority-control small{color:var(--muted);font-size:9px;white-space:nowrap}
+.nodes-table table{min-width:940px}
+.schedule-button{display:flex;align-items:center;gap:8px;padding:0;border:0;background:transparent;color:#aeb7ad;text-align:left;cursor:pointer}
+.schedule-button>span{display:flex;flex-direction:column;gap:3px}
+.schedule-button strong{font-size:10px;color:#d9dfd8}
+.schedule-button small{font-size:9px;color:var(--muted);white-space:nowrap}
+.schedule-button.active svg{color:var(--lime)}
+.schedule-button.paused svg{color:var(--orange)}
+.schedule-button.disabled{opacity:.58}
+.schedule-dialog .dialog-head p{margin:4px 0 0;color:var(--muted);font-size:10px}
+.schedule-modes{display:grid;grid-template-columns:repeat(3,1fr);padding:3px;border:1px solid var(--line);border-radius:8px;background:#0f120f}
+.schedule-modes button{height:34px;border:0;border-radius:5px;background:transparent;color:var(--muted);font-size:11px;cursor:pointer}
+.schedule-modes button.selected{background:#253220;color:var(--lime)}
+.schedule-explanation,.schedule-footnote{margin:0;color:var(--muted);font-size:11px;line-height:1.55}
+.schedule-explanation.warning{color:#d5aa78}
+.schedule-footnote{padding-top:2px;border-top:1px solid var(--line)}
+.schedule-days{margin:0;padding:0;border:0}
+.schedule-days legend{margin-bottom:8px;color:#cbd1ca;font-size:11px;font-weight:650}
+.schedule-days>div{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.schedule-days button{height:34px;padding:0;border:1px solid var(--line);border-radius:6px;background:#0f120f;color:var(--muted);font:10px 'DM Mono';cursor:pointer}
+.schedule-days button.selected{border-color:#587747;background:#1c2918;color:var(--lime)}
+.schedule-times{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.schedule-times input{color-scheme:dark}
+@media(max-width:760px){.sidebar .mobile-close{display:grid}.page-actions{width:100%}.page-actions button{flex:1}.page-head{flex-direction:column}.token-reveal{align-items:flex-start;flex-direction:column}.token-reveal button{width:100%}}
