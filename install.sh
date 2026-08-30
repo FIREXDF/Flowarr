@@ -108,6 +108,13 @@ if ! id "$FLOWARR_USER" >/dev/null 2>&1; then
   useradd --system --gid "$FLOWARR_GROUP" --home-dir "$DATA_DIR" --shell /usr/sbin/nologin "$FLOWARR_USER"
 fi
 
+# FFmpeg VAAPI needs access to the host render nodes (usually /dev/dri/renderD128).
+for gpu_group in render video; do
+  if getent group "$gpu_group" >/dev/null; then
+    usermod -aG "$gpu_group" "$FLOWARR_USER"
+  fi
+done
+
 log "Copie application vers $INSTALL_DIR"
 install -d -m 0755 "$INSTALL_DIR"
 rsync -a --delete \
@@ -178,6 +185,8 @@ UMask=0027
 NoNewPrivileges=true
 PrivateTmp=true
 PrivateDevices=true
+BindPaths=-/dev/dri
+DeviceAllow=char-drm rw
 ProtectSystem=strict
 ProtectHome=read-only
 ProtectKernelTunables=true
