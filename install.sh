@@ -23,6 +23,7 @@ die() { printf '\n\033[1;31m[Flowarr]\033[0m %s\n' "$*" >&2; exit 1; }
 
 on_error() {
   local exit_code=$?
+  trap - ERR
   printf '\nInstallation interrompue (ligne %s, code %s).\n' "${BASH_LINENO[0]}" "$exit_code" >&2
   printf 'Après création du service: journalctl -u flowarr -n 100 --no-pager\n' >&2
   exit "$exit_code"
@@ -48,7 +49,7 @@ install_node() {
     return
   fi
 
-  local machine node_arch base version archive expected work_dir
+  local machine node_arch base extract_dir archive expected work_dir
   machine="$(uname -m)"
   case "$machine" in
     x86_64|amd64) node_arch="x64" ;;
@@ -63,16 +64,16 @@ install_node() {
   curl --fail --location --silent --show-error "$base/SHASUMS256.txt" -o "$work_dir/SHASUMS256.txt"
   archive="$(awk -v arch="linux-${node_arch}.tar.xz" '$2 ~ arch "$" { print $2; exit }' "$work_dir/SHASUMS256.txt")"
   [[ -n "$archive" ]] || die "Archive Node.js introuvable pour $node_arch."
-  version="${archive%-linux-${node_arch}.tar.xz}"
+  extract_dir="${archive%.tar.xz}"
   expected="$(awk -v file="$archive" '$2 == file { print $1; exit }' "$work_dir/SHASUMS256.txt")"
   curl --fail --location --silent --show-error "$base/$archive" -o "$work_dir/$archive"
   printf '%s  %s\n' "$expected" "$work_dir/$archive" | sha256sum --check --status || die "Somme SHA-256 Node.js invalide."
   install -d -m 0755 /usr/local/lib/nodejs
-  rm -rf -- "/usr/local/lib/nodejs/$version"
+  rm -rf -- "/usr/local/lib/nodejs/$extract_dir"
   tar -xJf "$work_dir/$archive" -C /usr/local/lib/nodejs
-  ln -sfn "/usr/local/lib/nodejs/$version/bin/node" /usr/local/bin/node
-  ln -sfn "/usr/local/lib/nodejs/$version/bin/npm" /usr/local/bin/npm
-  ln -sfn "/usr/local/lib/nodejs/$version/bin/npx" /usr/local/bin/npx
+  ln -sfn "/usr/local/lib/nodejs/$extract_dir/bin/node" /usr/local/bin/node
+  ln -sfn "/usr/local/lib/nodejs/$extract_dir/bin/npm" /usr/local/bin/npm
+  ln -sfn "/usr/local/lib/nodejs/$extract_dir/bin/npx" /usr/local/bin/npx
   hash -r
   trap - RETURN
   rm -rf -- "$work_dir"
