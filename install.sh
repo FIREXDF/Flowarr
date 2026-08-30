@@ -40,11 +40,11 @@ source /etc/os-release
 
 install_node() {
   local current_major=""
-  if command -v node >/dev/null 2>&1; then
-    current_major="$(node -p 'process.versions.node.split(".")[0]')"
+  if [[ -x /usr/local/bin/node ]]; then
+    current_major="$(/usr/local/bin/node -p 'process.versions.node.split(".")[0]')"
   fi
   if [[ "$current_major" == "$NODE_MAJOR" ]]; then
-    log "Node.js $(node --version) déjà présent"
+    log "Node.js $(/usr/local/bin/node --version) déjà présent"
     return
   fi
 
@@ -91,8 +91,14 @@ apt-get update
 apt-get install -y --no-install-recommends ca-certificates curl ffmpeg openssl rsync xz-utils npm
 
 install_node
+export PATH="/usr/local/bin:$PATH"
+hash -r
+INSTALLED_NODE_MAJOR="$(/usr/local/bin/node -p 'process.versions.node.split(".")[0]')"
+[[ "$INSTALLED_NODE_MAJOR" == "$NODE_MAJOR" ]] || \
+  die "Node.js ${NODE_MAJOR}.x requis; /usr/local/bin/node fournit $(/usr/local/bin/node --version)."
+log "Node.js $(/usr/local/bin/node --version) actif"
 log "Installation pnpm ${PNPM_VERSION}"
-npm install --global --prefix /usr/local "pnpm@${PNPM_VERSION}"
+/usr/local/bin/npm install --global --prefix /usr/local "pnpm@${PNPM_VERSION}"
 
 if ! getent group "$FLOWARR_GROUP" >/dev/null; then
   groupadd --system "$FLOWARR_GROUP"
@@ -115,8 +121,8 @@ rsync -a --delete \
 
 log "Installation modules et compilation"
 cd "$INSTALL_DIR"
-pnpm install --frozen-lockfile
-pnpm build
+/usr/local/bin/pnpm install --frozen-lockfile
+/usr/local/bin/pnpm build
 
 install -d -o "$FLOWARR_USER" -g "$FLOWARR_GROUP" -m 0750 \
   "$DATA_DIR" "$PLUGIN_DIR" "$TEMP_DIR" "$MEDIA_DIR"
