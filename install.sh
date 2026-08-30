@@ -88,7 +88,7 @@ systemd_quote() {
 log "Installation dépendances système"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install -y --no-install-recommends ca-certificates curl ffmpeg openssl rsync xz-utils
+apt-get install -y --no-install-recommends ca-certificates curl ffmpeg openssl rsync xz-utils npm
 
 install_node
 log "Installation pnpm ${PNPM_VERSION}"
